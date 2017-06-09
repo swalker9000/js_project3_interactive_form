@@ -2,6 +2,9 @@ $('document').ready( function () {
 	$('#name').focus(); //focuses on name input upon loading page
 });
 
+//variables
+//var fee = 0; 
+
 
 //reveals/hides custom input for Job Role
 function otherJobRole () {
@@ -96,6 +99,56 @@ function activitySelection () {
 	});
 }
 
+//Registration fee
+
+
+
+function registrationFee () {
+	$(':checkbox').parent().not("label:first-of-type").val(100);
+	$(':checkbox').parent().first().val(200);
+	$(':checkbox').on('change', function() {
+		$('#registrationFee').remove();
+		if( $(":checkbox:checked")) {
+			$('.activities').append("<div id='registrationFee'><h3>Total: $<span id='span'></span> </h3></div>");
+		}
+		// if ($('input[type="checkbox"]').checked ) {
+		// 	$('#span').val( function add () {
+		// 		var	sum = 0;
+		// 		  $(":checkbox:checked").each(function() {
+  //   			  sum += ~~$(this).val();
+  // 		});
+  // 				$('#span').text(sum);
+		// 	})
+		// }
+		console.log( "checked");
+	});
+}
+
+//Payment Options
+
+function paymentOption () {
+	//hides text information as default
+	$('fieldset p').hide();
+	// When design is chosen then display cooresponding t-shirt color options					
+	$('#payment').on('change', function () {
+		switch ( $(this).val() )  {
+			case 'paypal': 
+				$('p:contains("Paypal")').show().text();
+				$('p:contains("Bitcoin")').hide().text();
+				$('#credit-card').hide().text();
+				break;
+			case 'bitcoin':
+				$('p:contains("Paypal")').hide().text();
+				$('p:contains("Bitcoin")').show().text();
+				$('#credit-card').hide().text();
+				break;
+			default :
+				$('p:contains("Paypal")').hide().text();
+				$('p:contains("Bitcoin")').hide().text();
+				$('#credit-card').show().text();
+		}
+	});
+}
 
 
 
@@ -103,3 +156,5 @@ function activitySelection () {
 otherJobRole();
 tShirtColors();
 activitySelection();
+registrationFee();
+paymentOption();
