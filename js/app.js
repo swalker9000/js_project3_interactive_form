@@ -20,75 +20,86 @@ function otherJobRole () {
 }
 
 // Show/Hide Color Option functions 
-function revealPunColors () {
-	$('option[value="cornflowerblue"]').show();
-	$('option[value="darkslategrey"]').show();
-	$('option[value="gold"]').show();
+
+function revealColors (color1, color2, color3) {
+	$('option[value="' + color1 + '"]').show();
+	$('option[value="' + color2 + '"]').show();
+	$('option[value="' + color3 + '"]').show();
 }
 
-function hidePunColors () {
-	$('option[value="cornflowerblue"]').hide();
-	$('option[value="darkslategrey"]').hide();
-	$('option[value="gold"]').hide();
+function hideColors (color1, color2, color3) {
+	$('option[value="' + color1 + '"]').hide();
+	$('option[value="' + color2 + '"]').hide();
+	$('option[value="' + color3 + '"]').hide();
 }
 
-function revealHeartColors () {
-	$('option[value="tomato"]').show();
-	$('option[value="steelblue"]').show();
-	$('option[value="dimgrey"]').show();
+// Add/Remove prompt for user to make a choice
+
+function pickPrompt (value, prompt) {
+	$("#color").prepend('<option value="' + value +  '" selected> Pick a ' + prompt + ' </option>');
 }
 
-function hideHeartColors () {
-	$('option[value="tomato"]').hide();
-	$('option[value="steelblue"]').hide();
-	$('option[value="dimgrey"]').hide();
-}
-
-function addPickAColor () {
-	$("#color").prepend('<option value="pickAColor" selected> Pick a Color </option>');
-}
-
-function addPickADesign () {
-	$("#color").prepend('<option value="pickADesign" selected> <-- Pick a Design </option>');
-}
-
-function removePickAColor () {
-	$('option[value="pickAColor"]').remove();
-}
-
-function removePickADesign () {
-	$('option[value="pickADesign"]').remove();
+function removePrompt (value) {
+	$('option[value="'+ value +'"]').remove();
 }
 
 
+//reveals/hides color selections depending on design chosen
 function tShirtColors () {
+	//hides all color options until user choses a design
 	$("#color").children().hide();
-	addPickADesign();
+	//prompts user to pick a design
+	pickPrompt("pickADesign", "Design");
+	// When design is chosen then display cooresponding t-shirt color options					
 	$('#design').on('change', function () {
-		removePickADesign();
+		removePrompt("pickADesign");
 		switch ( $(this).val() )  {
 			case 'js puns': 
-				removePickAColor();
-				addPickAColor();
-				revealPunColors();
-				hideHeartColors();
+				removePrompt("pickAColor"); //prevents duplicate pick a color options from being created
+				pickPrompt("pickAColor", "Color");	//prompts user to pick a specified color
+				revealColors("cornflowerblue", "darkslategrey", "gold");
+				hideColors("tomato", "steelblue", "dimgrey");
 				break;
 			case 'heart js':
-				removePickAColor();
-				addPickAColor();
-				hidePunColors();
-				revealHeartColors();
+				removePrompt("pickAColor");//prevents duplicate pick a color options from being created
+				pickPrompt("pickAColor", "Color");	//prompts user to pick a specified color
+				hideColors("cornflowerblue", "darkslategrey", "gold");
+				revealColors("tomato", "steelblue", "dimgrey");
 				break;
 			default :
-				removePickAColor();
-				addPickADesign();
-				hidePunColors();
-				hideHeartColors();
-
-
+				removePrompt("pickAColor"); //prevents duplicate pick a color options from being created
+				pickPrompt("pickADesign", "Design");	//prompts user to pick a design
+				hideColors("cornflowerblue", "darkslategrey", "gold");
+				hideColors("tomato", "steelblue", "dimgrey");
 		}
-});
+	});
 }
+
+//disables activities with conflicting times
+
+function conflictingTime (conflict1, conflict2, keyPhrase) {
+	if ($('input[name="' + conflict1 + '"]').prop("checked") || $('input[name="' + conflict2+ '"]').prop("checked")) {
+		$('label:contains("' + keyPhrase + '")').children().not('input:checked').prop({disabled: true});
+		$('input:disabled').parent().css("color", "grey");	
+	} else {
+		$('label:contains("' + keyPhrase + '")').children().prop({disabled: false});
+		$('input:enabled').parent().css("color", "");
+	}
+}
+
+//disables conflicting activity when checked
+
+function activitySelection () {
+	$('input[type="checkbox"]').on('change', function() {
+		conflictingTime( "js-frameworks", "express", "Tuesday 9am-12pm");
+		conflictingTime( "js-libs", "node", "Tuesday 1pm-4pm");
+	});
+}
+
+
+
+
 
 otherJobRole();
 tShirtColors();
+activitySelection();
