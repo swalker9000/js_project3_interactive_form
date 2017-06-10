@@ -2,6 +2,8 @@ $('document').ready( function () {
 	$('#name').focus(); //focuses on name input upon loading page
 });
 
+//Global Variables
+var total;
 
 //reveals/hides custom input for Job Role
 function otherJobRole () {
@@ -96,6 +98,18 @@ function activitySelection () {
 
 //Registration fee
 
+//var total = 0;
+function calculate() {
+var activities = document.querySelectorAll('input[type="checkbox"]'); 
+var activityValues = document.querySelectorAll('.activities label');
+total = 0;
+for( let i = 0; i < activities.length; i++ ) {
+ 	if( activities[i].checked) {
+ 		total += +parseInt(activityValues[i].value);
+ 	}
+ }
+ console.log(total);
+}
 
 
 function registrationFee () {
@@ -103,21 +117,16 @@ function registrationFee () {
 	$(':checkbox').parent().first().val(200);
 	$(':checkbox').on('change', function() {
 		$('#registrationFee').remove();
-		if( $(":checkbox:checked")) {
-			$('.activities').append("<div id='registrationFee'><h3>Total: $<span id='span'></span> </h3></div>");
+		calculate();
+		if ( $(":checkbox:checked").length > 0 ) {
+			$('.activities').append("<div id='registrationFee'><h3>Total: $" + total + "</h3></div>");
 		}
-		// if ($('input[type="checkbox"]').checked ) {
-		// 	$('#span').val( function add () {
-		// 		var	sum = 0;
-		// 		  $(":checkbox:checked").each(function() {
-  //   			  sum += ~~$(this).val();
-  // 		});
-  // 				$('#span').text(sum);
-		// 	})
-		// }
-		console.log( "checked");
+		
+		
 	});
 }
+
+
 
 //Payment Options
 
