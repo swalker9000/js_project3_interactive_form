@@ -5,6 +5,8 @@ $('document').ready( function () {
 //Global Variables
 var total;
 
+//JOB ROLES
+
 //reveals/hides custom input for Job Role
 function otherJobRole () {
 	//sets-up default view of 'other-title' hidden
@@ -21,6 +23,8 @@ function otherJobRole () {
 		}
 	});
 }
+
+//TSHIRT INFO
 
 // Show/Hide Color Option functions 
 
@@ -75,6 +79,8 @@ function tShirtColors () {
 	});
 }
 
+//REGISTER FOR ACTIVITIES
+
 //enables/disables checkboxes for activities with conflicting times
 
 function conflictingTime (conflict1, conflict2, keyPhrase) {
@@ -100,24 +106,28 @@ function activitySelection () {
 
 //var total = 0;
 function calculate() {
+//sets all the checkbox in the variable activities
 var activities = document.querySelectorAll('input[type="checkbox"]'); 
-var activityValues = document.querySelectorAll('.activities label');
 total = 0;
+//iterates through the activities and adds the value of the checkboxs to the total
 for( let i = 0; i < activities.length; i++ ) {
  	if( activities[i].checked) {
- 		total += +parseInt(activityValues[i].value);
+ 		total += +parseInt(activities[i].value);
  	}
  }
- console.log(total);
 }
 
 
 function registrationFee () {
-	$(':checkbox').parent().not("label:first-of-type").val(100);
-	$(':checkbox').parent().first().val(200);
+	//sets the value of the the activities
+	$(':checkbox').not("label:first-of-type").val(100);
+	$(':checkbox').first().val(200);
+	//when a checkbox is changed...
 	$(':checkbox').on('change', function() {
+		//remove appended div containing total message
 		$('#registrationFee').remove();
 		calculate();
+		//appends total message div when at least one check box is checked
 		if ( $(":checkbox:checked").length > 0 ) {
 			$('.activities').append("<div id='registrationFee'><h3>Total: $" + total + "</h3></div>");
 		}
@@ -128,7 +138,7 @@ function registrationFee () {
 
 
 
-//Payment Options
+//PAYMENT OPTIONS
 
 function paymentOption () {
 	//hides Paypal and Bitcoin text information as default
@@ -156,7 +166,9 @@ function paymentOption () {
 	});
 }
 
-//Form Validation
+//FORM VALIDATIONS
+
+//NAME VALIDATION
 
 //checks that text has been inputed into name field
 function validateName () {
@@ -209,6 +221,7 @@ function validateEmail () {
 	});
 }
 
+//ACTIVITY SELECTION VALIDATION
 
 //checks for at least one activity selection
 
@@ -227,6 +240,8 @@ function validateActivitySelection () {
 		}
 	});
 }
+
+//CC VALIDATION
 
 //validates credit card information
 function validateCreditcard () {
@@ -292,6 +307,7 @@ function validateCreditcard () {
 }
 
 
+//CALL FUNCTIONS
 
 otherJobRole();
 tShirtColors();
